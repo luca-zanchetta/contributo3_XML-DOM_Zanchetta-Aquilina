@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+<!-- Solo schema XSD; il file XML conterrà i dati effettivi -->
+
+<xsd:element name="infostud">
+   <xsd:complexType> 
+      <xsd:sequence> <!-- Singole tabelle -->
+	      <xsd:element ref="corsi" minOccurs="1" maxOccurs="1" />
+	      <xsd:element ref="colori" minOccurs="1" maxOccurs="1" />
+	      <xsd:element ref="iscrizioni" minOccurs="1" maxOccurs="1" />
+	      <xsd:element ref="appelli" minOccurs="1" maxOccurs="1" />
+	      <xsd:element ref="prenotazioni_appello" minOccurs="1" maxOccurs="1" />
+	      <xsd:element ref="studenti" minOccurs="1" maxOccurs="1" />
+      </xsd:sequence>
+   </xsd:complexType>
+</xsd:element>
+
+
+
+<!-- TABELLA COLORI -->
+
+<xsd:element name="colori">
+      <xsd:sequence>
+         <xsd:element ref="colore" maxOccurs="unbounded" />
+      </xsd:sequence>
+</xsd:element>
+<xsd:element name="colore"> <!-- singola "riga" della tabella -->
+      <xsd:sequence>
+         <xsd:element ref="nome" minOccurs="1" maxOccurs="1" /> <!-- forse è un attributo? -->
+      </xsd:sequence>   
+</xsd:element>
+<xsd:element name="nome" type="xsd:string"/>
+
+
+
+<!-- TABELLA CORSI -->
+
+<xsd:element name="corsi">
+      <xsd:sequence>
+         <xsd:element ref="corso" maxOccurs="unbounded" />
+      </xsd:sequence>
+</xsd:element>
+<xsd:element name="corso"> <!-- singola "riga" della tabella -->
+   <xsd:complexType>
+      <xsd:sequence>
+         <xsd:element ref="id" minOccurs="1" maxOccurs="1" /> <!-- forse è un attributo? -->
+         <xsd:element ref="nome" minOccurs="1" maxOccurs="1" />
+         <xsd:element ref="descrizione"  minOccurs="0" maxOccurs="1" />
+         <xsd:element ref="info_prof" minOccurs="0" maxOccurs="1" />
+         <xsd:element ref="id_colore" minOccurs="1" maxOccurs="1" />
+         <xsd:element ref="anno" minOccurs="1" maxOccurs="1" />
+         <xsd:element ref="curriculum" minOccurs="1" maxOccurs="1" />
+         <xsd:element ref="semestre" minOccurs="1" maxOccurs="1" />
+         <xsd:element ref="cfu" minOccurs="1" maxOccurs="1" />
+         <xsd:element ref="ssd" minOccurs="1" maxOccurs="1" />
+      </xsd:sequence>   
+   </xsd:complexType>
+</xsd:element>
+<xsd:element name="id" type="xsd:short"/>
+<xsd:element name="nome" type="xsd:string"/>
+<xsd:element name="descrizione" type="xsd:string"/>
+<xsd:element name="info_prof" type="xsd:string"/>
+<xsd:element name="id_colore" type="xsd:string"/>
+<xsd:element name="anno" type="xsd:string"/>
+<xsd:element name="curriculum" type="xsd:string"/>
+<xsd:element name="semestre" type="xsd:short"/>
+<xsd:element name="cfu" type="xsd:short"/>
+<xsd:element name="ssd" type="xsd:string"/>
+
+
+
+<!-- TABELLA STUDENTI -->
+
+<!-- contenuto -->
+
+
+
+<!-- TABELLA ISCRIZIONI -->
+
+<xsd:element name="iscrizioni">
+      <xsd:sequence>
+         <xsd:element ref="iscrizione" maxOccurs="unbounded" />
+      </xsd:sequence>
+</xsd:element>
+<xsd:element name="iscrizione"> <!-- singola "riga" della tabella -->
+   <xsd:complexType>
+      <xsd:sequence>
+         <xsd:element ref="id_studente" minOccurs="1" maxOccurs="1" />
+         <xsd:element ref="id_corso" minOccurs="1" maxOccurs="1" />
+         <xsd:element ref="data_iscrizione"  minOccurs="1" maxOccurs="1" />
+      </xsd:sequence>   
+   </xsd:complexType>
+</xsd:element>
+<xsd:element name="id_studente" type="xsd:short"/>
+<xsd:element name="id_corso" type="xsd:short"/>
+<xsd:element name="data_iscrizione" type="xsd:string"/>
+
+
+
+<!-- TABELLA APPELLI -->
+
+<!-- contenuto -->
+
+
+
+<!-- TABELLA PRENOTAZIONI_APPELLO -->
+
+<!-- contenuto -->
+
+</xsd:schema>
