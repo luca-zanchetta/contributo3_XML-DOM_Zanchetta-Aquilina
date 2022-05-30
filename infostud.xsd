@@ -71,10 +71,24 @@
 
 
 <!-- TABELLA STUDENTI -->
-
+<xsd:element name="studenti">
+    <xsd:sequence>
+            <xsd:element ref="studente" minOccurs="0" maxOccurs="unbounded">
+    </xsd:sequence>
+</xsd:element>
 <!-- contenuto -->
-
-
+<xsd:element name="studente">
+    <xsd:sequence>
+        <xsd:element ref="matricola" minOccurs="1" maxOccurs="1" />
+        <xsd:element ref="nome" minOccurs="1" maxOccurs="1" />
+        <xsd:element ref="cognome"  minOccurs="1" maxOccurs="1" />
+        <xsd:element ref="password" minOccurs="1" maxOccurs="1" />
+    </xsd:sequence>
+</xsd:element>
+<!-- campi studente -->
+<xsd:element name="matricola" type="xsd:string"/> 
+<xsd:element name="cognome"  type="xsd:string" />
+<xsd:element name="password" type="xsd:string"/>
 
 <!-- TABELLA ISCRIZIONI -->
 
@@ -99,13 +113,44 @@
 
 
 <!-- TABELLA APPELLI -->
-
+<xsd:element name="appelli">
+    <xsd:sequence>
+        <xsd:element ref="appello" minOccurs="0" maxOccurs="unbounded">
+    </xsd:sequence>
+</xsd:element>
 <!-- contenuto -->
-
-
+<xsd:element name="appello">
+    <xsd:sequence>
+        <xsd:element ref="codice" minOccurs="1" maxOccurs="1" /> 
+        <xsd:element ref="data_appello" minOccurs="1" maxOccurs="1" />
+        <xsd:element ref="data_scadenza"  minOccurs="1" maxOccurs="1" />
+        <xsd:element ref="id_corso" minOccurs="1" maxOccurs="1"/>
+    </xsd:sequence>
+</xsd:element>
+<!--campi appello -->
+<xsd:element name="codice" type="xsd:string"/> 
+<xsd:element name="data_appello"  type="xsd:dateTime" />
+<xsd:element name="data_scadenza" type="xsd:dateTime"/>
+<xsd:element name="id_corso" type="xsd:short"/>
 
 <!-- TABELLA PRENOTAZIONI_APPELLO -->
-
+<xsd:element name="prenotazioni_appello">
+    <xsd:sequence>
+        <xsd:element ref="prenotazione" minOccurs="0" maxOccurs="unbounded">
+    </xsd:sequence>
+</xsd:element>
 <!-- contenuto -->
-
+<xsd:element name="prenotazione">
+    <xsd:sequence>
+        <xsd:element ref="id_studente" minOccurs="1" maxOccurs="1" /> 
+        <xsd:element ref="id_appello" minOccurs="1" maxOccurs="1" />
+        <xsd:element ref="data_prenotazioni"  minOccurs="1" maxOccurs="1" />
+    </xsd:sequence>
+</xsd:element>
+<!-- campi prenotazione -->
+<xsd:element name="id_studente" type="xsd:short"/>
+<xsd:element name="id_appello" type="xsd:short"/>
+<xsd:element name="data_prenotazione" type="xsd:dateTime"/>
+	
 </xsd:schema>
+	
