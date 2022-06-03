@@ -276,8 +276,11 @@
   
 </corsi>
 
+<!--    ***Commento inserito per evitare che vengano caricate tabelle al momento non necessarie***
 <iscrizioni>
 </iscrizioni>
+
+-->
 
 <appelli>
     <appello>
@@ -402,6 +405,8 @@
     </appello>
 </appelli>
 
+<!--    ***Commento inserito per evitare che vengano caricate tabelle al momento non necessarie***
+
 <prenotazioni_appello>
     <prenotazione>
         <id_studente></id_studente>
@@ -424,5 +429,7 @@
         <password>interattiva</password>
     </studente>
 </studenti>
+
+-->
 
 </infostud>

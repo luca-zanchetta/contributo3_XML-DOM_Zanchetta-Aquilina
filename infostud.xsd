@@ -73,7 +73,7 @@
 <!-- TABELLA STUDENTI -->
 <xsd:element name="studenti">
     <xsd:sequence>
-            <xsd:element ref="studente" minOccurs="0" maxOccurs="unbounded">
+            <xsd:element ref="studente" minOccurs="0" maxOccurs="unbounded" />
     </xsd:sequence>
 </xsd:element>
 <!-- contenuto -->
@@ -115,7 +115,7 @@
 <!-- TABELLA APPELLI -->
 <xsd:element name="appelli">
     <xsd:sequence>
-        <xsd:element ref="appello" minOccurs="0" maxOccurs="unbounded">
+        <xsd:element ref="appello" minOccurs="0" maxOccurs="unbounded" />
     </xsd:sequence>
 </xsd:element>
 <!-- contenuto -->
@@ -136,7 +136,7 @@
 <!-- TABELLA PRENOTAZIONI_APPELLO -->
 <xsd:element name="prenotazioni_appello">
     <xsd:sequence>
-        <xsd:element ref="prenotazione" minOccurs="0" maxOccurs="unbounded">
+        <xsd:element ref="prenotazione" minOccurs="0" maxOccurs="unbounded" />
     </xsd:sequence>
 </xsd:element>
 <!-- contenuto -->
