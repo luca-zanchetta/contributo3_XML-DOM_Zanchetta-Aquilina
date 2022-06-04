@@ -1,3 +1,69 @@
+<?php
+function getNomeCorso($num) {
+    $xmlString = "";
+    foreach ( file("corsi.xml") as $node ) {
+        $xmlString .= trim($node);
+    }
+    
+    // Creazione del documento
+    $doc = new DOMDocument();
+    $doc->loadXML($xmlString);
+    $records = $doc->documentElement->childNodes;
+
+    if($records->length > 0) { /* C'è almeno un corso */
+        for ($i=0; $i<$records->length; $i++) {
+            $record = $records->item($i); // i-esimo corso
+
+            $idElement = $record->firstChild;   // Id
+            $id = $idElement->textContent;
+            if($id == $num) {
+                $nomeCorsoElement = $idElement->nextSibling;    // Nome corso
+                $nomeCorso = $nomeCorsoElement->textContent;
+            }
+        }
+    }
+    else $nomeCorso = "ERRORE";
+
+    return $nomeCorso;
+}
+
+
+function getColoreCorso($num) {
+    $xmlString = "";
+    foreach ( file("corsi.xml") as $node ) {
+        $xmlString .= trim($node);
+    }
+    
+    // Creazione del documento
+    $doc = new DOMDocument();
+    $doc->loadXML($xmlString);
+    $records = $doc->documentElement->childNodes;
+
+    if($records->length > 0) { /* C'è almeno un corso */
+        for ($i=0; $i<$records->length; $i++) {
+            $record = $records->item($i); // i-esimo corso
+
+            $idElement = $record->firstChild;   // Id
+            $id = $idElement->textContent;
+            if($id == $num) {
+                $nomeCorsoElement = $idElement->nextSibling;
+                $descrizioneElement = $nomeCorsoElement->nextSibling;
+                $infoProfElement = $descrizioneElement->nextSibling;
+
+                $coloreCorsoElement = $infoProfElement->nextSibling;
+                $coloreCorso = $coloreCorsoElement->textContent;
+            }
+        }
+    }
+    else $coloreCorso = "white";
+
+    return $coloreCorso;
+}
+
+?>
+
+
+
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -66,16 +132,90 @@
                 // Caricamento del contenuto informativo del file XML
                 $doc->loadXML($xmlString);
                 // Lista degli elementi del file XML caricato
-                $records = $doc->documentElement->childNodes; 
+                $records = $doc->documentElement->childNodes;
 
-                for ($i=0; $i<$records->length; $i++) {
-                    $record = $records->item($i); // i-esimo appeello
+                if($records->length > 0) { /* C'è almeno un appello */
+                    for ($i=0; $i<$records->length; $i++) {
+                        $record = $records->item($i); // i-esimo appello
+    
+                        $codiceElement = $record->firstChild;   // Codice
+                        $codice = $codiceElement->textContent;
+                        $dataAppelloElement = $codiceElement->nextSibling;  // Data appello
+                        $dataAppello = $dataAppelloElement->textContent;
+                        $dataScandenzaElement = $dataAppelloElement->nextSibling; // Data scadenza (è veramente necessaria?)
+                        $dataScandenza = $dataScandenzaElement->textContent;
+                        $idCorsoElement = $dataScandenzaElement->nextSibling; // Id corso di riferimento
+                        $idCorso = $idCorsoElement->textContent;
 
-                    $codiceElement = $record->firstChild;
-                    $codice = $codiceElement->textContent;
+                        switch($idCorso) {
+                            case 1:
+                                $nomeCorso = getNomeCorso(1);
+                                $colore = getColoreCorso(1);
+                                break;
+                            case 2:
+                                $nomeCorso = getNomeCorso(2);
+                                $colore = getColoreCorso(2);
+                                break;
+                            case 3:
+                                $nomeCorso = getNomeCorso(3);
+                                $colore = getColoreCorso(3);
+                                break;
+                            case 4:
+                                $nomeCorso = getNomeCorso(4);
+                                $colore = getColoreCorso(4);
+                                break;
+                            case 5:
+                                $nomeCorso = getNomeCorso(5);
+                                $colore = getColoreCorso(5);
+                                break;
+                            case 6:
+                                $nomeCorso = getNomeCorso(6);
+                                $colore = getColoreCorso(6);
+                                break;
+                            case 7:
+                                $nomeCorso = getNomeCorso(7);
+                                $colore = getColoreCorso(7);
+                                break;
+                            case 8:
+                                $nomeCorso = getNomeCorso(8);
+                                $colore = getColoreCorso(8);
+                                break;
+                            case 9:
+                                $nomeCorso = getNomeCorso(9);
+                                $colore = getColoreCorso(9);
+                                break;
+                            case 10:
+                                $nomeCorso = getNomeCorso(10);
+                                $colore = getColoreCorso(10);
+                                break;
+                            default:
+                                $nomeCorso = "ERRORE";
+                                $colore = "white";
+                                break;
+                        }
 
-                    /* WORK IN PROGRESS */
-                }                
+                        ?>
+                        <div class="blocco-esame" style="background-color:<?php echo $colore?>">
+                            <div class="nome-esame" >
+                                <?php echo $nomeCorso?><br />
+                                <?php echo $dataAppello?>
+                            </div>  
+                        </div>                                     
+                        <?php
+                    }
+                }
+                else { /* Non ci sono appelli */
+                ?>
+                    <form action="homepage.php" method="post">
+                        <div class="zero-esami_central">
+                            <h2>Nessun appello disponibile!</h2>
+                            <input class="bottoneHome" type="submit" name="home" value="TORNA ALLA HOME">
+                        </div>
+                    </form>
+                <?php
+                }
+
+                                
                 
                 /*
                     if ($result->num_rows > 0) {
