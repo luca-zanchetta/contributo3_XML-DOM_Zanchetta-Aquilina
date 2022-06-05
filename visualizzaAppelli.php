@@ -60,6 +60,34 @@ function getColoreCorso($num) {
     return $coloreCorso;
 }
 
+function cercaCorso($nomeCorsoDaCercare) {
+    $xmlString = "";
+    foreach ( file("corsi.xml") as $node ) {
+        $xmlString .= trim($node);
+    }
+    
+    // Creazione del documento
+    $doc = new DOMDocument();
+    $doc->loadXML($xmlString);
+    $records = $doc->documentElement->childNodes;
+
+    if($records->length > 0) {
+        for ($i=0; $i<$records->length; $i++) {
+            $record = $records->item($i);
+
+            $idElement = $record->firstChild;
+            $id = $idElement->textContent;
+            $nomeElement = $idElement->nextSibling;
+            $nome = $nomeElement->textContent;
+
+            if($nome == $nomeCorsoDaCercare) {
+                return $id;
+            }
+        }
+    }
+
+    return 0;
+}
 ?>
 
 
@@ -96,7 +124,7 @@ function getColoreCorso($num) {
                 </h2>
         </div>
         <div class="nav-central">
-            <form action="homepage.php" method="GET">
+            <form action="visualizzaAppelli.php" method="POST">
                 <div class="nav-logo">
                     <input type="submit" name="ricerca" value="">
                     <img src="search.png" alt="err" width="20px" style="display: inline-flex;">
@@ -111,10 +139,10 @@ function getColoreCorso($num) {
     <div class="central-block">
         <div class="sidebar">
             <h5>
-                <a class="opzione" href="fittizia.html">Visualizza corsi</a>
+                <a class="opzione" href="homepage.php">Visualizza corsi</a>
             </h5>
             <h5>
-                <a class="opzione" href="fittizia.html">Visualizza appelli</a>
+                <a class="opzione" href="visualizzaAppelli.php">Visualizza appelli</a>
             </h5>
         </div>
         <div class="body">
@@ -135,127 +163,138 @@ function getColoreCorso($num) {
                 $records = $doc->documentElement->childNodes;
 
                 if($records->length > 0) { /* C'è almeno un appello */
-                    for ($i=0; $i<$records->length; $i++) {
-                        $record = $records->item($i); // i-esimo appello
-    
-                        $codiceElement = $record->firstChild;   // Codice
-                        $codice = $codiceElement->textContent;
-                        $dataAppelloElement = $codiceElement->nextSibling;  // Data appello
-                        $dataAppello = $dataAppelloElement->textContent;
-                        $dataScandenzaElement = $dataAppelloElement->nextSibling; // Data scadenza (è veramente necessaria?)
-                        $dataScandenza = $dataScandenzaElement->textContent;
-                        $idCorsoElement = $dataScandenzaElement->nextSibling; // Id corso di riferimento
-                        $idCorso = $idCorsoElement->textContent;
+                    if(isset($_POST['filtro']) && $_POST['filtro'] != "") {
+                        $idCorso = cercaCorso($_POST['filtro']);
+                        if($idCorso != 0) {
+                            for ($i=0; $i<$records->length; $i++) {
+                                $record = $records->item($i); // i-esimo appello
+            
+                                $codiceElement = $record->firstChild;   // Codice
+                                $codice = $codiceElement->textContent;
+                                $dataAppelloElement = $codiceElement->nextSibling;  // Data appello
+                                $dataAppello = $dataAppelloElement->textContent;
+                                $dataScandenzaElement = $dataAppelloElement->nextSibling; // Data scadenza (è veramente necessaria?)
+                                $dataScandenza = $dataScandenzaElement->textContent;
+                                $idElement = $dataScandenzaElement->nextSibling;
+                                $id = $idElement->textContent;
 
-                        switch($idCorso) {
-                            case 1:
-                                $nomeCorso = getNomeCorso(1);
-                                $colore = getColoreCorso(1);
-                                break;
-                            case 2:
-                                $nomeCorso = getNomeCorso(2);
-                                $colore = getColoreCorso(2);
-                                break;
-                            case 3:
-                                $nomeCorso = getNomeCorso(3);
-                                $colore = getColoreCorso(3);
-                                break;
-                            case 4:
-                                $nomeCorso = getNomeCorso(4);
-                                $colore = getColoreCorso(4);
-                                break;
-                            case 5:
-                                $nomeCorso = getNomeCorso(5);
-                                $colore = getColoreCorso(5);
-                                break;
-                            case 6:
-                                $nomeCorso = getNomeCorso(6);
-                                $colore = getColoreCorso(6);
-                                break;
-                            case 7:
-                                $nomeCorso = getNomeCorso(7);
-                                $colore = getColoreCorso(7);
-                                break;
-                            case 8:
-                                $nomeCorso = getNomeCorso(8);
-                                $colore = getColoreCorso(8);
-                                break;
-                            case 9:
-                                $nomeCorso = getNomeCorso(9);
-                                $colore = getColoreCorso(9);
-                                break;
-                            case 10:
-                                $nomeCorso = getNomeCorso(10);
-                                $colore = getColoreCorso(10);
-                                break;
-                            default:
-                                $nomeCorso = "ERRORE";
-                                $colore = "white";
-                                break;
+                                $nomeCorso = getNomeCorso($idCorso);
+                                $colore = getColoreCorso($idCorso);
+
+                                if($idCorso == $id) {
+                                ?>
+                                    <div class="blocco-esame" style="background-color:<?php echo $colore?>">
+                                        <div class="nome-esame" >
+                                            <?php echo $nomeCorso?><br />
+                                            <?php echo $dataAppello?>
+                                        </div>  
+                                    </div>                                     
+                                    <?php
+                                }
+                            }
                         }
-
+                        else { /* Non ci sono appelli corrispondenti al corso selezionato */
                         ?>
-                        <div class="blocco-esame" style="background-color:<?php echo $colore?>">
-                            <div class="nome-esame" >
-                                <?php echo $nomeCorso?><br />
-                                <?php echo $dataAppello?>
-                            </div>  
-                        </div>                                     
+                            <form action="homepage.php" method="post">
+                                <div class="zero-esami_central">
+                                    <h2>Nessun appello disponibile!</h2>
+                                    <input class="bottoneHome" type="submit" name="home" value="TORNA ALLA HOME">
+                                </div>
+                            </form>
                         <?php
+                        }
+                    }
+                    elseif(isset($_POST['filtro']) && $_POST['filtro'] == "") {
+                    ?>
+                        <form action="homepage.php" method="post">
+                            <div class="zero-esami_central">
+                                <h2>ERRORE: Il campo di ricerca non pu&ograve; essere vuoto!</h2>
+                                <input class="bottoneHome" type="submit" name="home" value="TORNA ALLA HOME">
+                            </div>
+                        </form>
+                    <?php
+                    }
+                    else {
+                        for ($i=0; $i<$records->length; $i++) {
+                            $record = $records->item($i); // i-esimo appello
+        
+                            $codiceElement = $record->firstChild;   // Codice
+                            $codice = $codiceElement->textContent;
+                            $dataAppelloElement = $codiceElement->nextSibling;  // Data appello
+                            $dataAppello = $dataAppelloElement->textContent;
+                            $dataScandenzaElement = $dataAppelloElement->nextSibling; // Data scadenza (è veramente necessaria?)
+                            $dataScandenza = $dataScandenzaElement->textContent;
+                            $idCorsoElement = $dataScandenzaElement->nextSibling; // Id corso di riferimento
+                            $idCorso = $idCorsoElement->textContent;
+    
+                            switch($idCorso) {
+                                case 1:
+                                    $nomeCorso = getNomeCorso(1);
+                                    $colore = getColoreCorso(1);
+                                    break;
+                                case 2:
+                                    $nomeCorso = getNomeCorso(2);
+                                    $colore = getColoreCorso(2);
+                                    break;
+                                case 3:
+                                    $nomeCorso = getNomeCorso(3);
+                                    $colore = getColoreCorso(3);
+                                    break;
+                                case 4:
+                                    $nomeCorso = getNomeCorso(4);
+                                    $colore = getColoreCorso(4);
+                                    break;
+                                case 5:
+                                    $nomeCorso = getNomeCorso(5);
+                                    $colore = getColoreCorso(5);
+                                    break;
+                                case 6:
+                                    $nomeCorso = getNomeCorso(6);
+                                    $colore = getColoreCorso(6);
+                                    break;
+                                case 7:
+                                    $nomeCorso = getNomeCorso(7);
+                                    $colore = getColoreCorso(7);
+                                    break;
+                                case 8:
+                                    $nomeCorso = getNomeCorso(8);
+                                    $colore = getColoreCorso(8);
+                                    break;
+                                case 9:
+                                    $nomeCorso = getNomeCorso(9);
+                                    $colore = getColoreCorso(9);
+                                    break;
+                                case 10:
+                                    $nomeCorso = getNomeCorso(10);
+                                    $colore = getColoreCorso(10);
+                                    break;
+                                default:
+                                    $nomeCorso = "ERRORE";
+                                    $colore = "white";
+                                    break;
+                            }
+    
+                            ?>
+                            <div class="blocco-esame" style="background-color:<?php echo $colore?>">
+                                <div class="nome-esame" >
+                                    <?php echo $nomeCorso?><br />
+                                    <?php echo $dataAppello?>
+                                </div>  
+                            </div>                                     
+                            <?php
+                        }
                     }
                 }
                 else { /* Non ci sono appelli */
-                ?>
-                    <form action="homepage.php" method="post">
-                        <div class="zero-esami_central">
-                            <h2>Nessun appello disponibile!</h2>
-                            <input class="bottoneHome" type="submit" name="home" value="TORNA ALLA HOME">
-                        </div>
-                    </form>
-                <?php
-                }
-
-                                
-                
-                /*
-                    if ($result->num_rows > 0) {
-                        while($row = $result->fetch_assoc()){
-                            ?>
-                                <div class="blocco-esame" style="background-color:<?php echo $row["id_colore"]?>">
-                                    <div class="nome-esame" >
-                                        <?php echo $row["nome"]?>
-                                    </div> 
-                                    <div class="info-button">
-                                            Info
-                                            <form action="visualizza-corso.php" method="GET"> <!--Da implementare  visualizza-corso.php-->
-                                                <input type="submit" name="iscriviti" value="" >
-                                                <input type="hidden" name="corso" value=" <?php echo $row["id"] ?>">
-                                            </form>
-                                    </div>  
-                                </div>                                     
-                        <?php
-                        }  
-                    }
-                    elseif($result->num_rows == 0 and !isset($_GET['filtro'])) {
-                        ?>
-                            <form action="iscriviti.php" method="post">
+                    ?>
+                        <form action="homepage.php" method="post">
                             <div class="zero-esami_central">
-                                <h2>Non risultano iscrizioni ad alcun corso.</h2>
-                                <input class="button-iscrizione" type="submit" name="iscriviti" value="ISCRIVITI AD UN CORSO">
+                                <h2>Nessun appello disponibile!</h2>
+                                <input class="bottoneHome" type="submit" name="home" value="TORNA ALLA HOME">
                             </div>
-                            </form>
-                        <?php
-                    }elseif($result->num_rows == 0 and isset($_GET['filtro'])) {
-                        ?>
-                            <form action="homepage.php" method="post">
-                            <div class="zero-esami_central">
-                                <h2>Non sei iscritto a nessun corso con quel nome. Forse devi ancora iscriverti.</h2>
-                                <input class="button-iscrizione" type="submit" name="home" value="TORNA ALLA HOME">
-                            </div>
-                            </form>
-                        <?php
-                    }*/
-                ?>   
+                        </form>
+                    <?php
+                }?>
             </div>           
         </div>
     </div>
