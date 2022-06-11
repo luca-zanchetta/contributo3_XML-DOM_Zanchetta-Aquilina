@@ -1,3 +1,7 @@
+<?php
+require_once "phpFunctions.php";
+session_start();
+?>
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -23,11 +27,25 @@
                     Infostud
                 </h2>
             <div class="vertical-bar"></div>
-                <h2>
-                    <a class="logout" href="fittizia.html">
-                        ADMIN
-                    </a>
-                </h2>
+                <?php
+                    if(isset($_SESSION["login"])){
+                        ?>
+                        <h2>
+                            <a class="logout" href="amministrazione.php">
+                                Amministrazione
+                            </a>
+                        </h2>
+                    <?php
+                    }else{
+                        ?>
+                        <h2>
+                            <a class="logout" href="login.php">
+                                Login
+                            </a>
+                        </h2>
+                    <?php
+                    }
+                ?>      
         </div>
         <div class="nav-central">
             <form action="homepage.php" method="GET">
@@ -35,7 +53,7 @@
                     <input type="submit" name="ricerca" value="">
                     <img src="search.png" alt="err" width="20px" style="display: inline-flex;">
                 </div>    
-                    <input type="text" name="filtro">              
+                    <input type="text" name="filtro" value="<?php if(isset($_GET['filtro'])) echo $_GET['filtro'];?>">              
             </form>
         </div>
         <div class="nav-right">
@@ -54,44 +72,29 @@
         <div class="body">
             <h1 style="text-align: center; color: green;">CORSI DISPONIBILI:</h1>
             <div class="container-esami">
-                <?php /*
-                    if ($result->num_rows > 0) {
-                        while($row = $result->fetch_assoc()){
-                            ?>
-                                <div class="blocco-esame" style="background-color:<?php echo $row["id_colore"]?>">
-                                    <div class="nome-esame" >
-                                        <?php echo $row["nome"]?>
-                                    </div> 
-                                    <div class="info-button">
-                                            Info
-                                            <form action="visualizza-corso.php" method="GET"> <!--Da implementare  visualizza-corso.php-->
-                                                <input type="submit" name="iscriviti" value="" >
-                                                <input type="hidden" name="corso" value=" <?php echo $row["id"] ?>">
-                                            </form>
-                                    </div>  
-                                </div>                                     
-                        <?php
-                        }  
-                    }
-                    elseif($result->num_rows == 0 and !isset($_GET['filtro'])) {
+                <?php 
+                $listaCorsi = [];
+                if(isset($_GET['filtro']) && $_GET['filtro'] != "")
+                    $listaCorsi = getCorsiLike($_GET['filtro']);
+                else
+                    $listaCorsi = getCorsi();
+
+                    foreach($listaCorsi as $corso){
                         ?>
-                            <form action="iscriviti.php" method="post">
-                            <div class="zero-esami_central">
-                                <h2>Non risultano iscrizioni ad alcun corso.</h2>
-                                <input class="button-iscrizione" type="submit" name="iscriviti" value="ISCRIVITI AD UN CORSO">
-                            </div>
-                            </form>
+                         <div class="blocco-esame" style="background-color:<?php echo $corso->id_colore?>">
+                            <div class="nome-esame" >
+                                <?php echo $corso->nome?>
+                            </div> 
+                                <div class="info-button">
+                                    Info
+                                    <form action="visualizza-corso.php" method="GET">
+                                        <input type="submit" name="iscriviti" value="" >
+                                        <input type="hidden" name="corso" value="<?php echo $corso->id?>">
+                                    </form>
+                                </div>  
+                            </div>  
                         <?php
-                    }elseif($result->num_rows == 0 and isset($_GET['filtro'])) {
-                        ?>
-                            <form action="homepage.php" method="post">
-                            <div class="zero-esami_central">
-                                <h2>Non sei iscritto a nessun corso con quel nome. Forse devi ancora iscriverti.</h2>
-                                <input class="button-iscrizione" type="submit" name="home" value="TORNA ALLA HOME">
-                            </div>
-                            </form>
-                        <?php
-                    }*/
+                    }  
                 ?>   
             </div>           
         </div>

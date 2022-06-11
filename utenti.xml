@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<studenti xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="infostud.xsd">
+    <studente>
+        <matricola>admin</matricola>
+        <nome>admin</nome>
+        <cognome>admin</cognome>
+        <password>admin</password> 
+    </studente>
+</studenti>
