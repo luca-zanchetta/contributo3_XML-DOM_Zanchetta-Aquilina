@@ -28,11 +28,32 @@ session_start();
                     Infostud
                 </h2>
             <div class="vertical-bar"></div>
-                <h2>
-                    <a class="logout" href="login.php">
-                        Login
-                    </a>
-                </h2>
+            <?php
+                if(isset($_SESSION['login'])){
+                    ?>
+                    <h2>
+                        <a class="logout" href="amministrazione.php">
+                            Amministrazione
+                        </a>
+                    </h2>
+                    <div class="vertical-bar"></div>
+                    <h2>
+                        <a class="logout" href="logout.php">
+                            Logout
+                        </a>
+                    </h2>
+                <?php
+                }
+                else{
+                    ?>
+                    <h2>
+                        <a class="logout" href="login.php">
+                            Login
+                        </a>
+                    </h2>
+                <?php
+                }
+            ?>
         </div>
         <div class="nav-central">
             <form action="visualizzaAppelli.php" method="POST">
