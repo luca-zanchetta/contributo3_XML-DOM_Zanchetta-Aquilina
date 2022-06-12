@@ -158,8 +158,8 @@ function getCorsiLike($_nome){
         if(preg_match("#^{$_nome}#i", $corso->nome)) $listaCorsi[] = $corso;
     }
     return $listaCorsi;
-
 }
+
 function existsUser($_username,$_password){
     $xmlString = "";
     foreach ( file("utenti.xml") as $node ) {
@@ -182,8 +182,7 @@ function existsUser($_username,$_password){
         $con = $con->nextSibling;
         $user->password = $con->textContent;
 
-        if(!strcmp($user->matricola, $_username) && !strcmp($user->password, $_password)){
-            console_log("porco");
+        if($user->matricola == $_username && $user->password == $_password) {
             return true;
         }
     }
@@ -218,4 +217,95 @@ function getUserByUsername($_username) {
     }
     return null;
 }
+
+function getNomeCorso($num) {
+    $xmlString = "";
+    foreach ( file("corsi.xml") as $node ) {
+        $xmlString .= trim($node);
+    }
+    
+    // Creazione del documento
+    $doc = new DOMDocument();
+    $doc->loadXML($xmlString);
+    $records = $doc->documentElement->childNodes;
+
+    if($records->length > 0) { /* C'è almeno un corso */
+        for ($i=0; $i<$records->length; $i++) {
+            $record = $records->item($i); // i-esimo corso
+
+            $idElement = $record->firstChild;   // Id
+            $id = $idElement->textContent;
+            if($id == $num) {
+                $nomeCorsoElement = $idElement->nextSibling;    // Nome corso
+                $nomeCorso = $nomeCorsoElement->textContent;
+            }
+        }
+    }
+    else $nomeCorso = "ERRORE";
+
+    return $nomeCorso;
+}
+
+
+function getColoreCorso($num) {
+    $xmlString = "";
+    foreach ( file("corsi.xml") as $node ) {
+        $xmlString .= trim($node);
+    }
+    
+    // Creazione del documento
+    $doc = new DOMDocument();
+    $doc->loadXML($xmlString);
+    $records = $doc->documentElement->childNodes;
+
+    if($records->length > 0) { /* C'è almeno un corso */
+        for ($i=0; $i<$records->length; $i++) {
+            $record = $records->item($i); // i-esimo corso
+
+            $idElement = $record->firstChild;   // Id
+            $id = $idElement->textContent;
+            if($id == $num) {
+                $nomeCorsoElement = $idElement->nextSibling;
+                $descrizioneElement = $nomeCorsoElement->nextSibling;
+                $infoProfElement = $descrizioneElement->nextSibling;
+
+                $coloreCorsoElement = $infoProfElement->nextSibling;
+                $coloreCorso = $coloreCorsoElement->textContent;
+            }
+        }
+    }
+    else $coloreCorso = "white";
+
+    return $coloreCorso;
+}
+
+function cercaCorso($nomeCorsoDaCercare) {
+    $xmlString = "";
+    foreach ( file("corsi.xml") as $node ) {
+        $xmlString .= trim($node);
+    }
+    
+    // Creazione del documento
+    $doc = new DOMDocument();
+    $doc->loadXML($xmlString);
+    $records = $doc->documentElement->childNodes;
+
+    if($records->length > 0) {
+        for ($i=0; $i<$records->length; $i++) {
+            $record = $records->item($i);
+
+            $idElement = $record->firstChild;
+            $id = $idElement->textContent;
+            $nomeElement = $idElement->nextSibling;
+            $nome = $nomeElement->textContent;
+
+            if($nome == $nomeCorsoDaCercare) {
+                return $id;
+            }
+        }
+    }
+
+    return 0;
+}
+
 ?>

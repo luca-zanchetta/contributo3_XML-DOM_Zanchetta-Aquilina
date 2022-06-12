@@ -1,18 +1,20 @@
 <?php
-require_once "phpFunctions.php";
+require_once('phpFunctions.php');
 
 session_start();
-if(isset($_SESSION["login"])) header('homepage.php');
+if(isset($_SESSION['login'])) header('Location: homepage.php');
 /*utente non ancora loggato*/
-if(isset($_POST["matricola"]) && isset($_POST["password"])){
+if(isset($_POST['matricola']) && isset($_POST['password'])){
     /*controlliamo i dati inseriti*/
-    if(existsUser($_POST["matricola"],$_POST["password"])){
-        $_SESSION["login"] = getUserByUsername($_POST["matricola"]);
-        header('homepage.php');
+    if(existsUser($_POST['matricola'], $_POST['password'])){
+        $_SESSION['login'] = getUserByUsername($_POST['matricola']);
+        header('Location: homepage.php');
     }
-    /*in questo caso l'utente ha inserito dati sbagliati*/ 
-    $user = getUserByUsername($_POST["matricola"]);
-    /*username o password sbagliati*/  
+    else {
+        /*in questo caso l'utente ha inserito dati sbagliati*/ 
+        $user = getUserByUsername($_POST['matricola']);
+        /*username o password sbagliati*/  
+    }
 }
 
 /*logica Login*/

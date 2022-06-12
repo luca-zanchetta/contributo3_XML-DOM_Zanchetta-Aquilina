@@ -1,5 +1,5 @@
 <?php
-require_once "phpFunctions.php";
+require_once('phpFunctions.php');
 session_start();
 ?>
 <?xml version="1.0" encoding="UTF-8"?>
@@ -28,11 +28,17 @@ session_start();
                 </h2>
             <div class="vertical-bar"></div>
                 <?php
-                    if(isset($_SESSION["login"])){
+                    if(isset($_SESSION['login'])){
                         ?>
                         <h2>
                             <a class="logout" href="amministrazione.php">
                                 Amministrazione
+                            </a>
+                        </h2>
+                        <div class="vertical-bar"></div>
+                        <h2>
+                            <a class="logout" href="logout.php">
+                                Logout
                             </a>
                         </h2>
                     <?php
@@ -63,7 +69,7 @@ session_start();
     <div class="central-block">
         <div class="sidebar">
             <h5>
-                <a class="opzione" href="fittizia.html">Visualizza corsi</a>
+                <a class="opzione" href="homepage.php">Visualizza corsi</a>
             </h5>
             <h5>
                 <a class="opzione" href="visualizzaAppelli.php">Visualizza appelli</a>
