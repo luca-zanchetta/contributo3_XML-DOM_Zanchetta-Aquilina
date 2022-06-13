@@ -2,11 +2,35 @@
 require_once('phpFunctions.php');
 session_start();
 
+
 if(isset($_POST['invio'])) {
-    
+    if($_POST['nome-corso'] == "" || $_POST['descrizione'] == "" || $_POST['nome-docente'] == "" || $_POST['colore'] == "" || $_POST['anno'] == "" || $_POST['semestre'] == "" || $_POST['curriculum'] == "" || $_POST['cfu'] == "" || $_POST['ssd'] == "") {
+        //Dati mancanti...
+    }
+    else {
+        $nuovoCorso = new corso();
+
+        $nuovoCorso->id = calcolaIdCorso();
+        $nuovoCorso->nome = $_POST['nome-corso'];
+        $nuovoCorso->descrizione = $_POST['descrizione'];
+        $nuovoCorso->info_prof = $_POST['nome-docente'];
+        $nuovoCorso->id_colore = $_POST['colore'];
+        $nuovoCorso->anno = $_POST['anno'];
+        $nuovoCorso->semestre = $_POST['semestre'];
+        $nuovoCorso->curriculum = $_POST['curriculum'];
+        $nuovoCorso->cfu = $_POST['cfu'];
+        $nuovoCorso->ssd = $_POST['ssd'];
+
+        if(inserisciCorso($nuovoCorso)) {
+            header('Location: avvisoOK.html');
+        }
+        else {
+            header('Location: avvisoErrore.html');
+        }
+    }
 }
 elseif(!isset($_POST['invio'])) {
-    $id = calcolaIdCorso();
+    
 }
 
 
@@ -18,7 +42,7 @@ elseif(!isset($_POST['invio'])) {
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
     <link rel="stylesheet" href="stile-base.css">
-    <title>Homepage</title>
+    <title>Inserimento corsi</title>
 </head>
 <body>
     <div class="header">
@@ -85,8 +109,12 @@ elseif(!isset($_POST['invio'])) {
             </h5>
         </div>
         <div class="body">
-            <form action="fittizia.html" method="POST">
+            <form action="nuovoCorso.php" method="POST">
             <h1 style="text-align: center; color: green;">NUOVO CORSO</h1>
+            <?php
+            if($_POST['nome-corso'] == "" || $_POST['descrizione'] == "" || $_POST['nome-docente'] == "" || $_POST['colore'] == "" || $_POST['anno'] == "" || $_POST['semestre'] == "" || $_POST['curriculum'] == "" || $_POST['cfu'] == "" || $_POST['ssd'] == "") 
+                echo "<h3 style=\"text-align: center; color: red;\">DATI MANCANTI!</h3>";
+            ?>
             <div class="container-admin">
                 <h3>Nome corso:  </h3>
                 <input type="text" name="nome-corso" />
@@ -113,15 +141,15 @@ elseif(!isset($_POST['invio'])) {
             </div>
             <div class="container-admin">
                 <h3>Curriculum di riferimento:  </h3>
-                <input type="text" name="nome-corso" />
+                <input type="text" name="curriculum" />
             </div>
             <div class="container-admin">
                 <h3>CFU:  </h3>
-                <input type="text" name="nome-corso" />
+                <input type="text" name="cfu" />
             </div>
             <div class="container-admin">
                 <h3>SSD:  </h3>
-                <input type="text" name="nome-corso" />
+                <input type="text" name="ssd" />
                 <input type="submit" name="invio-corso" value="INVIO" />
             </div>
             </form>

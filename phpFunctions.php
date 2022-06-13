@@ -330,4 +330,33 @@ function calcolaIdCorso() {
     return ($corso->id + 1);
 }
 
+function inserisciCorso($nuovoCorso) {
+    $nomefile="corsi.xml";
+
+    $xmlString = "";
+    foreach ( file($nomefile) as $node ) {
+        $xmlString .= trim($node);
+    }
+    
+    // Creazione del documento
+    $doc = new DOMDocument();
+    $doc->loadXML($xmlString);
+
+    
+            
+    $xml = simplexml_load_file($nomefile);
+    $newcorso = $xml->addChild('corso'); //crea una tupla<corso> </corso>
+    $asd = $newcorso->addChild('id', $nuovoCorso->id);
+    $asd = $newcorso->addChild('nome', $nuovoCorso->nome);
+    //continua....
+        
+    //sovrascrive il vecchio file con i nuovi dati
+    $f = fopen($nomefile, "w");
+    fwrite($f,  $xml->asXML());
+    fclose($f);
+
+
+    return TRUE;
+}
+
 ?>
