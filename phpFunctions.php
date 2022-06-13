@@ -308,4 +308,26 @@ function cercaCorso($nomeCorsoDaCercare) {
     return 0;
 }
 
+function calcolaIdCorso() {
+    $xmlString = "";
+    foreach ( file("corsi.xml") as $node ) {
+        $xmlString .= trim($node);
+    }
+    
+    // Creazione del documento
+    $doc = new DOMDocument();
+    $doc->loadXML($xmlString);
+    $records = $doc->documentElement->childNodes;
+
+    $corso = new corso();
+    for ($i=0; $i<$records->length; $i++) {
+        $record = $records->item($i);
+        
+        $con = $record->firstChild;
+        $corso->id = $con->textContent;
+    }
+
+    return ($corso->id + 1);
+}
+
 ?>

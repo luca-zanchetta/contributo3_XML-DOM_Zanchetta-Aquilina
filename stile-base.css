@@ -138,7 +138,12 @@ div.container-esami {
     flex-wrap: wrap;
     padding-bottom: 10%;
 }
-
+div.container-admin {
+    justify-content: center; 
+    display: flex; 
+    flex-wrap: wrap;
+    padding-top: 3%;
+}
 div.blocco-esame {
     margin: 1%;
     width: 450px;
@@ -271,4 +276,23 @@ span#pagetitle {
     }
   }
 */
-/*eventi*/
+
+/* Bottoni admin */
+input.admin {
+    width: 250px;
+    height: 50px;
+    font-weight: bold;
+    font-size: 130%;
+    padding: 3%;
+    background-color:antiquewhite;
+}
+input.admin:hover {
+    background-color: gold;
+    width: 300px;
+    height: 70px;
+    font-size: 150%;
+    transition: width 0.7s, height 0.7s;
+}
+form.admin {
+    margin: 2%;
+}
