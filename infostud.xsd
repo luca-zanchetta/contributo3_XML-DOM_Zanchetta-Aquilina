@@ -50,8 +50,8 @@
          <xsd:element ref="info_prof" minOccurs="0" maxOccurs="1" />
          <xsd:element ref="id_colore" minOccurs="1" maxOccurs="1" />
          <xsd:element ref="anno" minOccurs="1" maxOccurs="1" />
-         <xsd:element ref="curriculum" minOccurs="1" maxOccurs="1" />
          <xsd:element ref="semestre" minOccurs="1" maxOccurs="1" />
+         <xsd:element ref="curriculum" minOccurs="1" maxOccurs="1" />
          <xsd:element ref="cfu" minOccurs="1" maxOccurs="1" />
          <xsd:element ref="ssd" minOccurs="1" maxOccurs="1" />
       </xsd:sequence>   
@@ -64,7 +64,7 @@
 <xsd:element name="id_colore" type="xsd:string"/>
 <xsd:element name="anno" type="xsd:string"/>
 <xsd:element name="curriculum" type="xsd:string"/>
-<xsd:element name="semestre" type="xsd:short"/>
+<xsd:element name="semestre" type="xsd:string"/>
 <xsd:element name="cfu" type="xsd:short"/>
 <xsd:element name="ssd" type="xsd:string"/>
 

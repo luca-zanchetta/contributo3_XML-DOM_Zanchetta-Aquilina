@@ -319,44 +319,69 @@ function calcolaIdCorso() {
     $doc->loadXML($xmlString);
     $records = $doc->documentElement->childNodes;
 
-    $corso = new corso();
+    $listaId = [];
     for ($i=0; $i<$records->length; $i++) {
         $record = $records->item($i);
         
         $con = $record->firstChild;
-        $corso->id = $con->textContent;
+        $listaId[] = $con->textContent;
     }
 
-    return ($corso->id + 1);
+    $id=1;
+    while(in_array($id,$listaId)){
+        $id++;
+    }
+
+    return $id;
 }
 
 function inserisciCorso($nuovoCorso) {
-    $nomefile="corsi.xml";
+       
+    $xml = simplexml_load_file('corsi.xml');
 
+    $newcorso = $xml->addChild('corso'); //crea una tupla<corso> </corso>
+    $asd = $newcorso->addChild('id', $nuovoCorso->id);
+    $asd = $newcorso->addChild('nome', $nuovoCorso->nome);
+    $asd = $newcorso->addChild('descrizione', $nuovoCorso->descrizione);
+    $asd = $newcorso->addChild('info_prof', $nuovoCorso->info_prof);
+    $asd = $newcorso->addChild('id_colore', $nuovoCorso->id_colore);
+    $asd = $newcorso->addChild('anno', $nuovoCorso->anno);
+    $asd = $newcorso->addChild('semestre', $nuovoCorso->semestre);
+    $asd = $newcorso->addChild('curriculum', $nuovoCorso->curriculum);
+    $asd = $newcorso->addChild('cfu', $nuovoCorso->cfu);
+    $asd = $newcorso->addChild('ssd', $nuovoCorso->ssd);
+    
+    //sovrascrive il vecchio file con i nuovi dati
+    $f = fopen('corsi.xml', "w");
+    $result = fwrite($f,  $xml->asXML());
+    fclose($f);
+    if(!$result) return FALSE;
+    else
+        return TRUE;
+    
+}
+
+function getColori() {
     $xmlString = "";
-    foreach ( file($nomefile) as $node ) {
+    foreach ( file("colori.xml") as $node ) {
         $xmlString .= trim($node);
     }
     
     // Creazione del documento
     $doc = new DOMDocument();
     $doc->loadXML($xmlString);
+    $records = $doc->documentElement->childNodes;
 
-    
-            
-    $xml = simplexml_load_file($nomefile);
-    $newcorso = $xml->addChild('corso'); //crea una tupla<corso> </corso>
-    $asd = $newcorso->addChild('id', $nuovoCorso->id);
-    $asd = $newcorso->addChild('nome', $nuovoCorso->nome);
-    //continua....
+    $listaColori = [];
+    for ($i=0; $i<$records->length; $i++) {
+        $record = $records->item($i);
         
-    //sovrascrive il vecchio file con i nuovi dati
-    $f = fopen($nomefile, "w");
-    fwrite($f,  $xml->asXML());
-    fclose($f);
+        $con = $record->firstChild;
+        $colore = $con->textContent;
 
+        $listaColori[] = $colore;
+    }
 
-    return TRUE;
+    return $listaColori;    
 }
-
 ?>

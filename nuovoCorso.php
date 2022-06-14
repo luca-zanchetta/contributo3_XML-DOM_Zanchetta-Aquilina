@@ -2,10 +2,11 @@
 require_once('phpFunctions.php');
 session_start();
 
-
+if(!isset($_SESSION['login'])) header("login.php");
 if(isset($_POST['invio'])) {
     if($_POST['nome-corso'] == "" || $_POST['descrizione'] == "" || $_POST['nome-docente'] == "" || $_POST['colore'] == "" || $_POST['anno'] == "" || $_POST['semestre'] == "" || $_POST['curriculum'] == "" || $_POST['cfu'] == "" || $_POST['ssd'] == "") {
         //Dati mancanti...
+        ?><script>console.log("dati mancanti");</script><?php
     }
     else {
         $nuovoCorso = new corso();
@@ -30,10 +31,7 @@ if(isset($_POST['invio'])) {
     }
 }
 elseif(!isset($_POST['invio'])) {
-    
 }
-
-
 ?>
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
@@ -42,7 +40,8 @@ elseif(!isset($_POST['invio'])) {
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
     <link rel="stylesheet" href="stile-base.css">
-    <title>Inserimento corsi</title>
+    <link rel="stylesheet" href="stile-amministrazione.css">
+    <title>Amministrazione-nuovo corso</title>
 </head>
 <body>
     <div class="header">
@@ -54,7 +53,7 @@ elseif(!isset($_POST['invio'])) {
             </div>
             <div class="vertical-bar"></div>
                 <h2>
-                    <form action="">
+                    <form action=" ">
                         <input type="button">
                     </form>
                     Infostud
@@ -86,15 +85,17 @@ elseif(!isset($_POST['invio'])) {
                     }
                 ?>      
         </div>
+        <!-- 
         <div class="nav-central">
             <form action="homepage.php" method="GET">
                 <div class="nav-logo">
                     <input type="submit" name="ricerca" value="">
                     <img src="search.png" alt="err" width="20px" style="display: inline-flex;">
                 </div>    
-                    <input type="text" name="filtro" value="<?php if(isset($_GET['filtro'])) echo $_GET['filtro'];?>">              
+                    <input type="text" name="filtro" value="<?php if(isset($_GET['filtro'])) echo $_GET['filtro'];?>">           
             </form>
         </div>
+         -->  
         <div class="nav-right">
             <img src="account.png" alt="dasdas" width="90px">
         </div>
@@ -109,50 +110,83 @@ elseif(!isset($_POST['invio'])) {
             </h5>
         </div>
         <div class="body">
-            <form action="nuovoCorso.php" method="POST">
-            <h1 style="text-align: center; color: green;">NUOVO CORSO</h1>
-            <?php
-            if($_POST['nome-corso'] == "" || $_POST['descrizione'] == "" || $_POST['nome-docente'] == "" || $_POST['colore'] == "" || $_POST['anno'] == "" || $_POST['semestre'] == "" || $_POST['curriculum'] == "" || $_POST['cfu'] == "" || $_POST['ssd'] == "") 
-                echo "<h3 style=\"text-align: center; color: red;\">DATI MANCANTI!</h3>";
-            ?>
-            <div class="container-admin">
-                <h3>Nome corso:  </h3>
-                <input type="text" name="nome-corso" />
+            <div style="display:flex;align-items:center; flex-direction:column">
+                <h1 style="text-align: center; color: green; display:flex;">NUOVO CORSO</h1>
+                <?php
+                    if(isset($_POST['invio'])) {
+                        if($_POST['nome-corso'] == "" || $_POST['descrizione'] == "" || $_POST['nome-docente'] == "" || $_POST['colore'] == "" || $_POST['anno'] == "" || $_POST['semestre'] == "" || $_POST['curriculum'] == "" || $_POST['cfu'] == "" || $_POST['ssd'] == "") 
+                            echo "<h3 style=\"text-align: center; color: red; display:flex;\">DATI MANCANTI!</h3>";
+                    }
+                    ?>
+                <form style="display: flex;" action="nuovoCorso.php" id="input" method="POST">
+                    <div class="form-body">
+                        <div class="input-form">
+                            <div class="input-container">
+                                <h3>
+                                    nome:
+                                </h3>
+                                <input type="text" name="nome-corso">
+                            </div>
+                            <div class="input-container">
+                                <h3>
+                                    docente:
+                                </h3>
+                                <input type="text" name="nome-docente">
+                            </div>
+                            <div class="input-container">
+                                <h3>
+                                    anno:
+                                </h3>
+                                <input type="text" name="anno">
+                            </div>
+                            <div class="input-container" >
+                                <h3>
+                                    semestre:
+                                </h3>
+                                <input type="text" name="semestre">
+                            </div>
+                            <div class="input-container" >
+                                <h3>
+                                    curriculum:
+                                </h3>
+                                <input type="text" name="curriculum">
+                            </div>
+                            <div class="input-container">
+                                <h3>
+                                    cfu:
+                                </h3>
+                                <input type="text" name="cfu">
+                            </div>
+                            <div class="input-container">
+                                <h3>
+                                    ssd:
+                                </h3>
+                                <input type="text" name="ssd">
+                            </div>
+                            <div class="input-container">
+                                <h3>
+                                    colore:
+                                </h3>
+                                <select name="colore" form="input">
+                                    <?php
+                                        $listaColori = getColori();
+                                        foreach($listaColori as $colore ){
+                                            ?><option value="<?php echo $colore ?>"><?php echo $colore ?></option><?php
+                                        }
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="desc-container">
+                                <h3>descrizione</h3>
+                                <textarea form="input" name="descrizione"></textarea>
+                            </div>
+                            <div class="submit">
+                                <input type="submit" name="invio">
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </div>
-            <div class="container-admin">
-                <h3>Descrizione corso:  </h3>
-                <input type="text" name="descrizione" />
-            </div>
-            <div class="container-admin">
-                <h3>Nome docente:  </h3>
-                <input type="text" name="nome-docente" />
-            </div>
-            <div class="container-admin">
-                <h3>Colore di visualizzazione:  </h3>
-                <input type="text" name="colore" />
-            </div>
-            <div class="container-admin">
-                <h3>Anno di riferimento:  </h3>
-                <input type="text" name="anno" />
-            </div>
-            <div class="container-admin">
-                <h3>Semestre di riferimento:  </h3>
-                <input type="text" name="semestre" />
-            </div>
-            <div class="container-admin">
-                <h3>Curriculum di riferimento:  </h3>
-                <input type="text" name="curriculum" />
-            </div>
-            <div class="container-admin">
-                <h3>CFU:  </h3>
-                <input type="text" name="cfu" />
-            </div>
-            <div class="container-admin">
-                <h3>SSD:  </h3>
-                <input type="text" name="ssd" />
-                <input type="submit" name="invio-corso" value="INVIO" />
-            </div>
-            </form>
         </div>
     </div>
 </div>

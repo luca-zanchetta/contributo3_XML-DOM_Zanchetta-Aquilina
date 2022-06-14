@@ -16,8 +16,6 @@ if(isset($_POST['matricola']) && isset($_POST['password'])){
         /*username o password sbagliati*/  
     }
 }
-
-/*logica Login*/
 ?>
 
 <?xml version="1.0" encoding="UTF-8"?>
