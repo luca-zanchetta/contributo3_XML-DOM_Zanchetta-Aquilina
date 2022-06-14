@@ -20,6 +20,12 @@ class utente {
     public $cognome;
     public $password;
 }
+class appello{
+    public $codice;
+    public $data_appello;
+    public $data_scadenza;
+    public $id_corso;
+}
 /*======================================================*/
 /*=====================Funzioni php=====================*/
 /*======================================================*/
@@ -383,5 +389,44 @@ function getColori() {
     }
 
     return $listaColori;    
+}
+
+function inserisciAppello($nuovoAppello) {
+    $xmlString = "";
+    foreach ( file("appelli.xml") as $node ) {
+        $xmlString .= trim($node);
+    }
+    
+    // Creazione del documento
+    $doc = new DOMDocument();
+    $doc->loadXML($xmlString);
+    $records = $doc->documentElement->childNodes;
+
+    for ($i=0; $i<$records->length; $i++) {
+        $record = $records->item($i);
+        
+        $con = $record->firstChild;
+        $codice = $con->textContent;
+
+        if($codice == $nuovoAppello->codice) return false;
+    }
+
+    //il codice inserito non è duplicato
+
+    $xml = simplexml_load_file('appelli.xml');
+
+    $newcorso = $xml->addChild('appello'); //crea una tupla<corso> </corso>
+    $asd = $newcorso->addChild('codice', $nuovoAppello->codice);
+    $asd = $newcorso->addChild('data_appello', $nuovoAppello->data_appello);
+    $asd = $newcorso->addChild('data_scadenza', $nuovoAppello->data_scadenza);
+    $asd = $newcorso->addChild('id_corso', $nuovoAppello->id_corso);
+
+    //sovrascrive il vecchio file con i nuovi dati
+    $f = fopen('appelli.xml', "w");
+    $result = fwrite($f,  $xml->asXML());
+    fclose($f);
+    if(!$result) return FALSE;
+    else
+        return TRUE;
 }
 ?>

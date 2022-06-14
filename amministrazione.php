@@ -1,7 +1,7 @@
 <?php
 require_once('phpFunctions.php');
 session_start();
-if(!isset($_SESSION['login'])) header("login.php");
+if(!isset($_SESSION['login'])) header("Location: login.php");
 ?>
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
@@ -87,7 +87,7 @@ if(!isset($_SESSION['login'])) header("login.php");
                 </form>
             </div>
             <div class="container-admin">
-                <form class="admin" action="fittizia.html" method="POST">
+                <form class="admin" action="nuovoAppello.php" method="POST">
                     <input class="admin" type="submit" name="nuovo-appello" value="NUOVO APPELLO" />
                 </form>
                 <form class="admin" action="fittizia.html" method="POST">
