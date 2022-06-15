@@ -181,7 +181,7 @@ elseif(!isset($_POST['invio'])) {
                                 <textarea form="input" name="descrizione"></textarea>
                             </div>
                             <div class="submit">
-                                <input type="submit" name="invio">
+                                <input type="submit" name="invio" value="INVIO">
                             </div>
                         </div>
                     </div>

@@ -34,7 +34,7 @@ elseif(!isset($_POST['invio'])) {
 <head>
     <link rel="stylesheet" href="stile-base.css">
     <link rel="stylesheet" href="stile-amministrazione.css">
-    <title>Amministrazione-nuovo corso</title>
+    <title>Amministrazione - Nuovo appello</title>
 </head>
 <body>
     <div class="header">
@@ -104,7 +104,7 @@ elseif(!isset($_POST['invio'])) {
         </div>
         <div class="body">
             <div style="display:flex;align-items:center; flex-direction:column">
-                <h1 style="text-align: center; color: green; display:flex;">NUOVO CORSO</h1>
+                <h1 style="text-align: center; color: green; display:flex;">NUOVO APPELLO</h1>
                 <?php
                     if(isset($_POST['invio'])) {
                         if($_POST['codice'] == "" || $_POST['data-appello'] == "" || $_POST['ora-appello'] == "" || $_POST['data-scadenza'] == "" || $_POST['ora-scadenza'] == "" ||$_POST['corso'] == "") 
@@ -159,7 +159,7 @@ elseif(!isset($_POST['invio'])) {
                             </div>
                         </div>
                         <div class="submit">
-                                <input type="submit" name="invio">
+                                <input type="submit" name="invio" value="INVIO">
                             </div>
                     </div>
                 </form>

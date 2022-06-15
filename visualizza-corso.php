@@ -1,5 +1,6 @@
 <?php
-require_once "phpFunctions.php"
+require_once("phpFunctions.php");
+session_start();
 ?>
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
@@ -27,11 +28,31 @@ require_once "phpFunctions.php"
                     Infostud
                 </h2>
             <div class="vertical-bar"></div>
-                <h2>
-                    <a class="logout" href="logout.php">
-                        logout
-                    </a>
-                </h2>
+                <?php
+                    if(isset($_SESSION['login'])){
+                        ?>
+                        <h2>
+                            <a class="logout" href="amministrazione.php">
+                                Amministrazione
+                            </a>
+                        </h2>
+                        <div class="vertical-bar"></div>
+                        <h2>
+                            <a class="logout" href="logout.php">
+                                Logout
+                            </a>
+                        </h2>
+                    <?php
+                    }else{
+                        ?>
+                        <h2>
+                            <a class="logout" href="login.php">
+                                Login
+                            </a>
+                        </h2>
+                    <?php
+                    }
+                ?>
         </div>
         <div class="nav-central">
             <form action="homepage.php" method="GET">
