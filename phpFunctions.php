@@ -429,4 +429,82 @@ function inserisciAppello($nuovoAppello) {
     else
         return TRUE;
 }
+function eliminaAppello($codice){
+    $xmlString = "";
+    foreach ( file("appelli.xml") as $node ) {
+        $xmlString .= trim($node);
+    }
+
+    $nodeToRemove = null;
+    $doc = new DOMDocument();
+    $doc->loadXML($xmlString);
+    $records = $doc->documentElement->getElementsByTagName("appello");
+    for ($i=0; $i<$records->length; $i++) {
+        $record = $records->item($i);
+
+        $con = $record->firstChild;
+        $_codice = $con->textContent;
+
+        if($codice == $_codice)
+            $nodeToRemove=$record;
+    }
+
+    //Now remove it.
+    if ($nodeToRemove->parentNode->removeChild($nodeToRemove) == null) return false;
+    
+    echo $doc->save("appelli.xml"); 
+    return true;
+}
+function eliminaAppelliCorso($id_corso){
+    $xmlString = "";
+    foreach ( file("appelli.xml") as $node ) {
+        $xmlString .= trim($node);
+    }
+
+    $doc = new DOMDocument();
+    $doc->loadXML($xmlString);
+    $records = $doc->documentElement->getElementsByTagName("appello");
+    for ($i=0; $i<$records->length; $i++) {
+        $record = $records->item($i);
+
+        $con = $record->firstChild;
+        $_codice = $con->textContent;
+        $con = $con->nextSibling;
+        $con = $con->nextSibling;
+        $con = $con->nextSibling;
+        $idCorso= $con->textContent;
+
+        if($id_corso == $idCorso)
+            $record->parentNode->removeChild($record);
+    }
+
+    echo $doc->save("appelli.xml"); 
+    return true;
+}
+
+function eliminaCorso($_id) {
+    $xmlString = "";
+    foreach ( file("corsi.xml") as $node ) {
+        $xmlString .= trim($node);
+    }
+
+    $doc = new DOMDocument();
+    $doc->loadXML($xmlString);
+    $records = $doc->documentElement->getElementsByTagName("corso");
+    for ($i=0; $i<$records->length; $i++) {
+        $record = $records->item($i);
+
+        $con = $record->firstChild;
+        $id = $con->textContent;
+
+        if($id == $_id){
+            $record->parentNode->removeChild($record);
+            break;
+        }
+            
+    }
+
+    echo $doc->save("corsi.xml"); 
+    return true;
+}
 ?>

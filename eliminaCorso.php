@@ -1,7 +1,6 @@
 <?php
 require_once('phpFunctions.php');
 session_start();
-if(!isset($_SESSION['login'])) header("Location: login.php");
 ?>
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
@@ -77,23 +76,33 @@ if(!isset($_SESSION['login'])) header("Location: login.php");
             </h5>
         </div>
         <div class="body">
-            <h1 style="text-align: center; color: green;">FUNZIONI DI AMMINISTRAZIONE:</h1>
-            <div class="container-admin">
-                <form class="admin" action="nuovoCorso.php" method="POST">
-                    <input class="admin" type="submit" name="nuovo-corso" value="NUOVO CORSO" />
-                </form>
-                <form class="admin" action="eliminaCorso.php" method="POST">
-                    <input class="admin" type="submit" name="elimina-corso" value="ELIMINA CORSO" />
-                </form>
-            </div>
-            <div class="container-admin">
-                <form class="admin" action="nuovoAppello.php" method="POST">
-                    <input class="admin" type="submit" name="nuovo-appello" value="NUOVO APPELLO" />
-                </form>
-                <form class="admin" action="eliminaAppello.php" method="POST">
-                    <input class="admin" type="submit" name="elimina-appello" value="ELIMINA APPELLO" />
-                </form>  
-            </div>          
+            <h1 style="text-align: center; color: green;">CORSI DISPONIBILI:</h1>
+            <div class="container-esami">
+                <?php 
+                $listaCorsi = [];
+                if(isset($_GET['filtro']) && $_GET['filtro'] != "")
+                    $listaCorsi = getCorsiLike($_GET['filtro']);
+                else
+                    $listaCorsi = getCorsi();
+
+                    foreach($listaCorsi as $corso){
+                        ?>
+                         <div class="blocco-esame" style="background-color:<?php echo $corso->id_colore?>">
+                            <div class="nome-esame" >
+                                <?php echo $corso->nome?>
+                            </div> 
+                                <div class="info-button">
+                                    Elimina
+                                    <form action="eliminaCorsoScript.php" method="GET">
+                                        <input type="submit" name="iscriviti" value="" >
+                                        <input type="hidden" name="corso" value="<?php echo $corso->id?>">
+                                    </form>
+                                </div>  
+                            </div>  
+                        <?php
+                    }  
+                ?>   
+            </div>           
         </div>
     </div>
 </div>
