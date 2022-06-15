@@ -3,6 +3,6 @@
     if(isset($_GET['corso'])){
         eliminaAppelliCorso($_GET['corso']);
         eliminaCorso($_GET['corso']);
-        header("Location: avvisoOk.html");
+        header("Location: avvisoEliminazione.html");
     }
 ?>
